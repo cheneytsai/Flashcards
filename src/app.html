@@ -1,0 +1,256 @@
+<title>Gín-á Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans:ital,wght@0,400;0,600;0,700&family=Noto+Sans+TC:wght@500;700;900&display=swap">
+<style>
+:root{
+  --ground:#E9F2EC; --ground-2:#DCEAE0; --dot:#C6DBCD;
+  --paper:#FFFDF8; --paper-2:#F6F1E4; --paper-edge:#E7DFCB;
+  --ink:#22302B; --ink-soft:#5F726A; --ink-faint:#8FA098;
+  --line:#D6E4DB;
+  --accent:#EF5B3E; --accent-ink:#FFF6EA;
+  --mango:#FFC24B; --lake:#3E9DD6; --leaf:#5FAE63; --plum:#9B6FC7;
+  --shadow:rgba(34,48,43,.16); --shadow-2:rgba(34,48,43,.09);
+  --chip:#FFFDF8; --chip-on:#22302B; --chip-on-ink:#FFF9EC;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#131A18; --ground-2:#0E1413; --dot:#243029;
+    --paper:#1F2A26; --paper-2:#26332E; --paper-edge:#33443D;
+    --ink:#F1EEE4; --ink-soft:#A5B6AD; --ink-faint:#7B8C84;
+    --line:#31413A;
+    --accent:#FF7357; --accent-ink:#1A110E;
+    --mango:#FFCE6B; --lake:#5FB4E4; --leaf:#79C57D; --plum:#B189DD;
+    --shadow:rgba(0,0,0,.5); --shadow-2:rgba(0,0,0,.3);
+    --chip:#26332E; --chip-on:#F1EEE4; --chip-on-ink:#131A18;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131A18; --ground-2:#0E1413; --dot:#243029;
+  --paper:#1F2A26; --paper-2:#26332E; --paper-edge:#33443D;
+  --ink:#F1EEE4; --ink-soft:#A5B6AD; --ink-faint:#7B8C84;
+  --line:#31413A;
+  --accent:#FF7357; --accent-ink:#1A110E;
+  --mango:#FFCE6B; --lake:#5FB4E4; --leaf:#79C57D; --plum:#B189DD;
+  --shadow:rgba(0,0,0,.5); --shadow-2:rgba(0,0,0,.3);
+  --chip:#26332E; --chip-on:#F1EEE4; --chip-on-ink:#131A18;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Baloo 2","Noto Sans TC",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background-image:radial-gradient(var(--dot) 1.4px,transparent 1.5px);
+  background-size:22px 22px;
+  -webkit-tap-highlight-color:transparent;
+  overflow:hidden;
+}
+.rom{font-family:"Noto Sans",system-ui,sans-serif}
+.han{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",serif}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid var(--lake); outline-offset:3px; border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---------- screens ---------- */
+.screen{position:fixed;inset:0;display:none;flex-direction:column}
+.screen.on{display:flex}
+
+/* ---------- home ---------- */
+#home{overflow-y:auto;overflow-x:hidden}
+.wrap{width:min(760px,100%);margin:0 auto;padding:26px 20px 40px;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;align-items:center;gap:14px;padding-top:6px}
+.brand .mark{width:62px;height:62px;flex:none;filter:drop-shadow(0 4px 8px var(--shadow-2))}
+.brand h1{margin:0;font-size:clamp(29px,7vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1;text-wrap:balance}
+.brand p{margin:5px 0 0;font-size:15px;font-weight:500;color:var(--ink-soft);line-height:1.35}
+.brand .tw{font-family:"Noto Sans TC",serif;font-weight:700}
+
+.panel{background:var(--paper);border-radius:24px;padding:20px 20px 22px;
+  box-shadow:0 2px 0 var(--paper-edge),0 12px 30px -18px var(--shadow)}
+.lbl{display:flex;align-items:baseline;gap:10px;margin:0 0 14px}
+.lbl b{font-size:19px;font-weight:800}
+.lbl span{font-size:13px;font-weight:600;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase;font-family:"Noto Sans",sans-serif}
+
+.sizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(76px,1fr));gap:10px}
+.size{background:var(--chip);border:2.5px solid var(--line);border-radius:16px;padding:13px 6px;
+  font-size:22px;font-weight:800;line-height:1;transition:transform .12s,background .15s,border-color .15s,color .15s}
+.size small{display:block;font-size:11px;font-weight:600;color:var(--ink-faint);margin-top:5px;font-family:"Noto Sans",sans-serif;letter-spacing:.03em}
+.size[aria-pressed="true"]{background:var(--chip-on);border-color:var(--chip-on);color:var(--chip-on-ink)}
+.size[aria-pressed="true"] small{color:var(--chip-on-ink);opacity:.7}
+.size:active{transform:scale(.95)}
+
+.slider{display:flex;align-items:center;gap:14px;margin-top:16px}
+.slider input{flex:1;accent-color:var(--accent);height:26px}
+.slider output{font-size:20px;font-weight:800;min-width:3.4ch;text-align:right;font-variant-numeric:tabular-nums}
+
+.topics{display:flex;flex-wrap:wrap;gap:8px}
+.topic{background:var(--chip);border:2.5px solid var(--line);border-radius:999px;padding:8px 15px;
+  font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:7px;transition:transform .12s,background .15s,border-color .15s,color .15s}
+.topic i{font-style:normal;font-size:12px;font-weight:600;color:var(--ink-faint);font-variant-numeric:tabular-nums;font-family:"Noto Sans",sans-serif}
+.topic[aria-pressed="true"]{background:var(--chip-on);border-color:var(--chip-on);color:var(--chip-on-ink)}
+.topic[aria-pressed="true"] i{color:var(--chip-on-ink);opacity:.65}
+.topic:active{transform:scale(.95)}
+.topic.all{background:var(--mango);border-color:var(--mango);color:#2B2013}
+.topic.all[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{background:var(--chip);border:2.5px solid var(--line);border-radius:999px;padding:8px 15px;font-size:14px;font-weight:700}
+.opt[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#0F1A10}
+
+.go{position:sticky;bottom:0;padding-top:6px;background:linear-gradient(to top,var(--ground) 62%,transparent)}
+.go button{width:100%;background:var(--accent);color:var(--accent-ink);border-radius:22px;padding:19px 20px;
+  font-size:25px;font-weight:800;letter-spacing:.01em;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 72%,#000),0 16px 28px -16px var(--shadow);
+  transition:transform .1s,box-shadow .1s}
+.go button:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 72%,#000)}
+.go button b{display:block;font-size:14px;font-weight:600;opacity:.85;margin-top:3px;font-family:"Noto Sans",sans-serif}
+.foot{font-size:12.5px;line-height:1.55;color:var(--ink-faint);font-family:"Noto Sans",sans-serif;text-align:center;padding:0 6px}
+
+/* ---------- deck ---------- */
+#deck{padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom))}
+.bar{display:flex;align-items:center;gap:10px;height:48px;flex:none}
+.icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--paper);
+  box-shadow:0 2px 0 var(--paper-edge);transition:transform .1s}
+.icon:active{transform:translateY(2px);box-shadow:none}
+.icon svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.count{flex:1;text-align:center;font-size:15px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;font-family:"Noto Sans",sans-serif;letter-spacing:.02em}
+.count b{color:var(--ink);font-size:19px;font-weight:800}
+.count em{font-style:normal;display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+
+.stage{flex:1;position:relative;display:grid;place-items:center;padding:8px 0 4px;min-height:0}
+.deckstack{position:absolute;inset:8px 0 4px;display:grid;place-items:center;pointer-events:none}
+.deckstack div{position:absolute;width:min(94%,430px);height:100%;max-height:640px;border-radius:30px;background:var(--paper);
+  box-shadow:0 2px 0 var(--paper-edge);opacity:.55}
+.deckstack div:nth-child(1){transform:rotate(-3.2deg) scale(.965)}
+.deckstack div:nth-child(2){transform:rotate(2.4deg) scale(.982)}
+
+.card{width:min(94%,430px);height:100%;max-height:640px;perspective:1400px;touch-action:pan-y;position:relative;z-index:1}
+.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.22,.9,.3,1.1)}
+.card.flip .inner{transform:rotateY(180deg)}
+.card.deal .inner{animation:deal .34s cubic-bezier(.2,.9,.3,1)}
+@keyframes deal{from{transform:translateX(var(--from,34px)) rotate(var(--rot,2.5deg)) scale(.94);opacity:.3}to{transform:none;opacity:1}}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--paper);border-radius:30px;box-shadow:0 3px 0 var(--paper-edge),0 26px 40px -26px var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:20px 18px;overflow:hidden}
+.face.back{transform:rotateY(180deg);background:var(--paper-2)}
+.face::after{content:"";position:absolute;inset:9px;border-radius:22px;border:2.5px dashed var(--line);pointer-events:none}
+
+.art{width:min(74%,296px);aspect-ratio:1;flex:0 1 auto;min-height:0;max-height:48%}
+.eyebrow{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-family:"Noto Sans",sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  border:2px solid var(--line);border-radius:999px;padding:5px 14px;white-space:nowrap}
+.art svg{width:100%;height:100%;display:block}
+.zh{font-family:"Noto Sans TC","PingFang TC",serif;font-weight:900;line-height:1.05;letter-spacing:.02em;text-align:center;
+  font-size:clamp(38px,13vw,64px);margin-top:6px}
+.zh.long{font-size:clamp(28px,9vw,46px)}
+.py{font-family:"Noto Sans",sans-serif;font-weight:600;font-size:clamp(14px,4vw,19px);color:var(--ink-soft);letter-spacing:.04em;margin-top:4px}
+.hint{position:absolute;bottom:16px;font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-faint);font-family:"Noto Sans",sans-serif}
+
+.rows{display:flex;flex-direction:column;gap:clamp(16px,3.4vh,28px);width:100%;align-items:center;padding:0 6px}
+.row{text-align:center;width:100%}
+.row .tag{font-family:"Noto Sans",sans-serif;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:3px}
+.row .en{font-size:clamp(28px,8.5vw,42px);font-weight:800;line-height:1.1;text-wrap:balance}
+.row .tw{font-family:"Noto Sans TC",serif;font-size:clamp(26px,8vw,38px);font-weight:700;line-height:1.15}
+.row .tl{font-family:"Noto Sans",sans-serif;font-size:clamp(17px,5.2vw,24px);font-weight:600;color:var(--accent);letter-spacing:.01em;margin-top:2px}
+.row .mand{font-family:"Noto Sans TC",serif;font-size:clamp(17px,5vw,22px);font-weight:500;color:var(--ink-soft)}
+.row .mand span{font-family:"Noto Sans",sans-serif;font-weight:600;font-size:.86em}
+.divider{width:52px;height:3px;border-radius:2px;background:var(--line)}
+.say{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:var(--chip);border:2px solid var(--line);
+  border-radius:999px;padding:5px 13px;font-size:13px;font-weight:700;font-family:"Noto Sans",sans-serif}
+.say svg{width:15px;height:15px;fill:var(--ink)}
+.say:active{transform:scale(.94)}
+
+.nav{display:flex;align-items:center;gap:12px;height:66px;flex:none;padding:0 2px}
+.nav button{flex:1;height:56px;border-radius:20px;background:var(--paper);box-shadow:0 3px 0 var(--paper-edge);
+  font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .1s}
+.nav button:active{transform:translateY(3px);box-shadow:none}
+.nav button.main{flex:1.5;background:var(--lake);color:#04202F;box-shadow:0 3px 0 color-mix(in srgb,var(--lake) 70%,#000)}
+.nav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+.round{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:var(--mango);color:#2B2013;
+  font-size:13px;font-weight:800;padding:6px 16px;border-radius:999px;z-index:5;pointer-events:none;
+  animation:pop 2.1s ease forwards;box-shadow:0 4px 12px -4px var(--shadow)}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,-10px) scale(.9)}12%,72%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-8px) scale(.96)}}
+
+@media (min-width:720px) and (min-height:620px){
+  .card,.deckstack div{width:min(90%,470px);max-height:660px}
+  .art{width:min(66%,300px)}
+}
+@media (max-height:560px){
+  .art{width:min(40%,150px);max-height:38%}
+  .eyebrow{top:12px}
+  .zh{font-size:clamp(32px,9vh,46px)}
+  .nav{height:58px}.nav button{height:48px}
+}
+</style>
+
+<main>
+<section id="home" class="screen on">
+  <div class="wrap">
+    <header class="brand">
+      <div class="mark" id="mark"></div>
+      <div>
+        <h1>Gín-á Flashcards</h1>
+        <p>1000 illustrated words in English, <span class="tw">華語</span> and <span class="tw">台語</span> — for ages 4 to 7.</p>
+      </div>
+    </header>
+
+    <div class="panel">
+      <p class="lbl"><b>How many cards?</b> <span id="poolNote">1000 available</span></p>
+      <div class="sizes" id="sizes"></div>
+      <div class="slider">
+        <label for="sizeRange" style="font-size:14px;font-weight:700;color:var(--ink-soft)">Any number</label>
+        <input id="sizeRange" type="range" min="1" max="1000" step="1" value="20" aria-label="Number of cards">
+        <output id="sizeOut">20</output>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="lbl"><b>Topics</b> <span>pick any</span></p>
+      <div class="topics" id="topics"></div>
+    </div>
+
+    <div class="panel">
+      <p class="lbl"><b>Card options</b></p>
+      <div class="opts" id="opts">
+        <button class="opt" id="optPinyin" aria-pressed="true">Pinyin on the front</button>
+        <button class="opt" id="optSound" aria-pressed="true">Tap to hear it</button>
+        <button class="opt" id="optShuffle" aria-pressed="true">Shuffle each round</button>
+      </div>
+    </div>
+
+    <div class="go"><button id="start">Start the deck<b id="startNote">20 cards · all topics</b></button></div>
+    <p class="foot">Front: picture + 漢字. Back: English + 台語 (Tâi-lô) + pinyin.<br>Taiwanese readings follow the MOE Tâi-lô system — worth checking with a native speaker before teaching.</p>
+  </div>
+</section>
+
+<section id="deck" class="screen">
+  <div class="bar">
+    <button class="icon" id="back" aria-label="Back to setup"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="count"><em id="roundLbl">Round 1</em><span><b id="pos">1</b> / <span id="total">20</span></span></div>
+    <button class="icon" id="reshuffle" aria-label="Shuffle the deck"><svg viewBox="0 0 24 24"><path d="M4 7h4l8 10h4M4 17h4l3-3.6M16 7h4M18 5l2 2-2 2M18 15l2 2-2 2"/></svg></button>
+  </div>
+
+  <div class="stage">
+    <div class="deckstack"><div></div><div></div></div>
+    <div class="card" id="card" role="button" tabindex="0" aria-label="Flashcard, activate to flip">
+      <div class="inner">
+        <div class="face front" id="front"></div>
+        <div class="face back" id="backface"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="prev" aria-label="Previous card"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Back</button>
+    <button class="main" id="flip">Flip</button>
+    <button id="next" aria-label="Next card">Next<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</section>
+</main>
+<script>/*__ART__*/</script>
+<script>/*__WORDS__*/</script>
+<script>/*__APP__*/</script>
