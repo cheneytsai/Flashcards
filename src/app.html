@@ -61,7 +61,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
 /* ---------- home ---------- */
 #home{overflow-y:auto;overflow-x:hidden}
-.wrap{width:min(760px,100%);margin:0 auto;padding:26px 20px 40px;display:flex;flex-direction:column;gap:26px}
+.wrap{width:min(760px,100%);margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:22px}
 .brand{display:flex;align-items:center;gap:14px;padding-top:6px}
 .brand .mark{width:62px;height:62px;flex:none;filter:drop-shadow(0 4px 8px var(--shadow-2))}
 .brand h1{margin:0;font-size:clamp(29px,7vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1;text-wrap:balance}
@@ -100,8 +100,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .opt{background:var(--chip);border:2.5px solid var(--line);border-radius:999px;padding:8px 15px;font-size:14px;font-weight:700}
 .opt[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#0F1A10}
 
-.go{position:sticky;bottom:0;padding-top:6px;background:linear-gradient(to top,var(--ground) 62%,transparent)}
-.go button{width:100%;background:var(--accent);color:var(--accent-ink);border-radius:22px;padding:19px 20px;
+.go{position:sticky;bottom:0;padding:6px 0 calc(6px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--ground) 68%,transparent)}
+.go button{width:100%;background:var(--accent);color:var(--accent-ink);border-radius:22px;padding:20px 20px;
   font-size:25px;font-weight:800;letter-spacing:.01em;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 72%,#000),0 16px 28px -16px var(--shadow);
   transition:transform .1s,box-shadow .1s}
 .go button:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 72%,#000)}
@@ -109,43 +109,48 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .foot{font-size:12.5px;line-height:1.55;color:var(--ink-faint);font-family:"Noto Sans",sans-serif;text-align:center;padding:0 6px}
 
 /* ---------- deck ---------- */
-#deck{padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom))}
-.bar{display:flex;align-items:center;gap:10px;height:48px;flex:none}
-.icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--paper);
-  box-shadow:0 2px 0 var(--paper-edge);transition:transform .1s}
+#deck{padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom))}
+.bar{display:flex;align-items:center;gap:8px;height:42px;flex:none}
+.icon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--paper);
+  box-shadow:0 2px 0 var(--paper-edge);transition:transform .1s;flex:none}
 .icon:active{transform:translateY(2px);box-shadow:none}
-.icon svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.count{flex:1;text-align:center;font-size:15px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;font-family:"Noto Sans",sans-serif;letter-spacing:.02em}
-.count b{color:var(--ink);font-size:19px;font-weight:800}
-.count em{font-style:normal;display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.icon svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.count{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums;font-family:"Noto Sans",sans-serif;letter-spacing:.02em}
+.count b{color:var(--ink);font-size:18px;font-weight:800}
+.count em{font-style:normal;display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
 
-.stage{flex:1;position:relative;display:grid;place-items:center;padding:8px 0 4px;min-height:0}
-.deckstack{position:absolute;inset:8px 0 4px;display:grid;place-items:center;pointer-events:none}
-.deckstack div{position:absolute;width:min(94%,430px);height:100%;max-height:640px;border-radius:30px;background:var(--paper);
+/* The card and its shadow-stack are absolutely positioned with all four
+   insets set, so their box is definite and `margin:auto` centers them —
+   this fills the stage edge-to-edge instead of shrinking to content size
+   (which is what a grid `place-items:center` + `height:100%` child does). */
+.stage{flex:1;position:relative;min-height:0}
+.deckstack{position:absolute;inset:5px 0;margin:auto;width:min(97%,480px);max-height:800px;pointer-events:none}
+.deckstack div{position:absolute;inset:0;border-radius:28px;background:var(--paper);
   box-shadow:0 2px 0 var(--paper-edge);opacity:.55}
-.deckstack div:nth-child(1){transform:rotate(-3.2deg) scale(.965)}
-.deckstack div:nth-child(2){transform:rotate(2.4deg) scale(.982)}
+.deckstack div:nth-child(1){transform:rotate(-3deg) scale(.965)}
+.deckstack div:nth-child(2){transform:rotate(2.2deg) scale(.982)}
 
-.card{width:min(94%,430px);height:100%;max-height:640px;perspective:1400px;touch-action:pan-y;position:relative;z-index:1}
-.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.22,.9,.3,1.1)}
+.card{position:absolute;inset:5px 0;margin:auto;width:min(97%,480px);max-height:800px;
+  perspective:1400px;touch-action:pan-y;z-index:1}
+.inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.22,.9,.3,1.1)}
 .card.flip .inner{transform:rotateY(180deg)}
 .card.deal .inner{animation:deal .34s cubic-bezier(.2,.9,.3,1)}
 @keyframes deal{from{transform:translateX(var(--from,34px)) rotate(var(--rot,2.5deg)) scale(.94);opacity:.3}to{transform:none;opacity:1}}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  background:var(--paper);border-radius:30px;box-shadow:0 3px 0 var(--paper-edge),0 26px 40px -26px var(--shadow);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:20px 18px;overflow:hidden}
+  background:var(--paper);border-radius:28px;box-shadow:0 3px 0 var(--paper-edge),0 26px 40px -26px var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,2.4vh,22px);padding:20px 18px;overflow:hidden}
 .face.back{transform:rotateY(180deg);background:var(--paper-2)}
-.face::after{content:"";position:absolute;inset:9px;border-radius:22px;border:2.5px dashed var(--line);pointer-events:none}
+.face::after{content:"";position:absolute;inset:8px;border-radius:20px;border:2.5px dashed var(--line);pointer-events:none}
 
-.art{width:min(74%,296px);aspect-ratio:1;flex:0 1 auto;min-height:0;max-height:48%}
-.eyebrow{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-family:"Noto Sans",sans-serif;
+.art{width:min(84%,380px);aspect-ratio:1;flex:0 1 auto;min-height:0;max-height:46%}
+.eyebrow{position:absolute;top:24px;left:50%;transform:translateX(-50%);font-family:"Noto Sans",sans-serif;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
   border:2px solid var(--line);border-radius:999px;padding:5px 14px;white-space:nowrap}
 .art svg{width:100%;height:100%;display:block}
 .zh{font-family:"Noto Sans TC","PingFang TC",serif;font-weight:900;line-height:1.05;letter-spacing:.02em;text-align:center;
-  font-size:clamp(38px,13vw,64px);margin-top:6px}
-.zh.long{font-size:clamp(28px,9vw,46px)}
-.py{font-family:"Noto Sans",sans-serif;font-weight:600;font-size:clamp(14px,4vw,19px);color:var(--ink-soft);letter-spacing:.04em;margin-top:4px}
+  font-size:clamp(40px,14vw,84px)}
+.zh.long{font-size:clamp(28px,9.5vw,54px)}
+.py{font-family:"Noto Sans",sans-serif;font-weight:600;font-size:clamp(15px,4.2vw,22px);color:var(--ink-soft);letter-spacing:.04em}
 .hint{position:absolute;bottom:16px;font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink-faint);font-family:"Noto Sans",sans-serif}
 
@@ -163,8 +168,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .say svg{width:15px;height:15px;fill:var(--ink)}
 .say:active{transform:scale(.94)}
 
-.nav{display:flex;align-items:center;gap:12px;height:66px;flex:none;padding:0 2px}
-.nav button{flex:1;height:56px;border-radius:20px;background:var(--paper);box-shadow:0 3px 0 var(--paper-edge);
+.nav{display:flex;align-items:center;gap:10px;height:60px;flex:none;padding:0 2px}
+.nav button{flex:1;height:52px;border-radius:19px;background:var(--paper);box-shadow:0 3px 0 var(--paper-edge);
   font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .1s}
 .nav button:active{transform:translateY(3px);box-shadow:none}
 .nav button.main{flex:1.5;background:var(--lake);color:#04202F;box-shadow:0 3px 0 color-mix(in srgb,var(--lake) 70%,#000)}
@@ -176,14 +181,15 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 @keyframes pop{0%{opacity:0;transform:translate(-50%,-10px) scale(.9)}12%,72%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-8px) scale(.96)}}
 
 @media (min-width:720px) and (min-height:620px){
-  .card,.deckstack div{width:min(90%,470px);max-height:660px}
-  .art{width:min(66%,300px)}
+  .card,.deckstack{width:min(70%,520px);max-height:760px}
+  .art{width:min(58%,320px)}
 }
 @media (max-height:560px){
-  .art{width:min(40%,150px);max-height:38%}
-  .eyebrow{top:12px}
-  .zh{font-size:clamp(32px,9vh,46px)}
-  .nav{height:58px}.nav button{height:48px}
+  .art{width:min(38%,160px);max-height:40%}
+  .eyebrow{top:10px}
+  .zh{font-size:clamp(30px,10vh,50px)}
+  .bar{height:38px}.icon{width:36px;height:36px}
+  .nav{height:52px}.nav button{height:44px}
 }
 </style>
 
