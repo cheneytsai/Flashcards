@@ -1,4 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EF5B3E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gín-á Flashcards">
+<meta name="description" content="1000 illustrated vocabulary flashcards in English, Mandarin and Taiwanese for ages 4-7.">
 <title>Gín-á Flashcards</title>
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans:ital,wght@0,400;0,600;0,700&family=Noto+Sans+TC:wght@500;700;900&display=swap">
@@ -51,7 +63,7 @@ body{
 }
 .rom{font-family:"Noto Sans",system-ui,sans-serif}
 .han{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",serif}
-button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 :focus-visible{outline:3px solid var(--lake); outline-offset:3px; border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
@@ -131,7 +143,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .deckstack div:nth-child(2){transform:rotate(2.2deg) scale(.982)}
 
 .card{position:absolute;inset:5px 0;margin:auto;width:min(97%,480px);max-height:800px;
-  perspective:1400px;touch-action:pan-y;z-index:1}
+  perspective:1400px;touch-action:pan-y;z-index:1;user-select:none;-webkit-user-select:none}
 .inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.22,.9,.3,1.1)}
 .card.flip .inner{transform:rotateY(180deg)}
 .card.deal .inner{animation:deal .34s cubic-bezier(.2,.9,.3,1)}
@@ -192,7 +204,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   .nav{height:52px}.nav button{height:44px}
 }
 </style>
-
+</head>
+<body>
 <main>
 <section id="home" class="screen on">
   <div class="wrap">
@@ -2267,3 +2280,5 @@ a('kindergarten','thing',{s:[['p','M4 96 q56 -12 112 0 v6 h-112 z','#8FC46F'],['
   syncHome();
 })();
 </script>
+</body>
+</html>
